@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Edit Lesson{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Edit Lesson</h2>
+    <form method="post" enctype="multipart/form-data">
+        <div class="mb-3"><input type="text" name="title" class="form-control" value="{{ lesson.title }}" required></div>
+        <div class="mb-3"><textarea name="content" class="form-control" rows="5">{{ lesson.content or '' }}</textarea></div>
+        <div class="mb-3"><input type="text" name="youtube_url" class="form-control" value="{{ lesson.youtube_url or '' }}" placeholder="YouTube URL"></div>
+        <div class="mb-3"><input type="number" name="order" class="form-control" value="{{ lesson.order }}"></div>
+        <div class="mb-3"><label>Replace PDF:</label><input type="file" name="pdf" class="form-control" accept=".pdf"></div>
+        {% if lesson.pdf_filename %}<p>Current PDF: <a href="{{ url_for('uploaded_file', filename=lesson.pdf_filename) }}" target="_blank">{{ lesson.pdf_filename }}</a></p>{% endif %}
+        <div class="mb-3"><label>Replace Photos (select multiple):</label><input type="file" name="photos" class="form-control" accept="image/*" multiple></div>
+        {% if lesson.photo_filenames %}
+            <p>Current photos: {% for f in lesson.photo_filenames.split(',') %}<img src="{{ url_for('uploaded_file', filename=f.strip()) }}" height="60" class="me-1">{% endfor %}</p>
+        {% endif %}
+        <button type="submit" class="btn btn-success">Update</button>
+        <a href="{{ url_for('admin_lessons', module_id=lesson.module_id) }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

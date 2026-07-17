@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}{{ lesson.title }}{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Tutorials</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('course_detail', course_id=course.id) }}">{{ course.title }}</a></li>
+            <li class="breadcrumb-item active">{{ lesson.title }}</li>
+        </ol>
+    </nav>
+
+    <h1>{{ lesson.title }}</h1>
+    <hr>
+
+    <!-- VIDEO FIRST -->
+    {% if lesson.youtube_url %}
+    <div class="ratio ratio-16x9 mb-4">
+        <iframe src="{{ lesson.youtube_url.replace('watch?v=', 'embed/') }}" allowfullscreen></iframe>
+    </div>
+    {% endif %}
+
+    <!-- NOTES SECOND -->
+    {% if lesson.content %}
+    <div class="mb-4">
+        {{ lesson.content|safe }}
+    </div>
+    {% endif %}
+
+    <!-- PHOTOS -->
+    {% if lesson.photo_filenames %}
+    <div class="row mb-4">
+        {% for photo in lesson.photo_filenames.split(',') %}
+            {% if photo.strip() %}
+            <div class="col-md-4 mb-3">
+                <img src="{{ url_for('uploaded_file', filename=photo.strip()) }}" class="img-fluid rounded" alt="Lesson photo">
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- PDF -->
+    {% if lesson.pdf_filename %}
+    <a href="{{ url_for('uploaded_file', filename=lesson.pdf_filename) }}" class="btn btn-outline-danger mb-3" target="_blank">
+        📄 Download PDF
+    </a>
+    {% endif %}
+
+    <a href="{{ url_for('course_detail', course_id=course.id) }}" class="btn btn-outline-success">← Back to course</a>
+</div>
+{% endblock %}

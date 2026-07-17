@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Modules - {{ course.title }}{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('admin_courses') }}">Courses</a></li>
+            <li class="breadcrumb-item active">{{ course.title }}</li>
+        </ol>
+    </nav>
+    <h2>Modules for "{{ course.title }}"</h2>
+    <form method="post" action="{{ url_for('admin_add_module') }}" class="row g-2 mb-4">
+        <input type="hidden" name="course_id" value="{{ course.id }}">
+        <div class="col-6"><input type="text" name="title" class="form-control" placeholder="Module title" required></div>
+        <div class="col-3"><input type="number" name="order" class="form-control" value="0" placeholder="Order"></div>
+        <div class="col-3"><button type="submit" class="btn btn-success w-100">Add Module</button></div>
+    </form>
+    <ul class="list-group">
+        {% for mod in modules %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <strong>{{ mod.order }}. {{ mod.title }}</strong>
+            <div>
+                <a href="{{ url_for('admin_lessons', module_id=mod.id) }}" class="btn btn-sm btn-info">Lessons</a>
+                <a href="{{ url_for('admin_edit_module', module_id=mod.id) }}" class="btn btn-sm btn-warning">Edit</a>
+                <a href="{{ url_for('admin_delete_module', module_id=mod.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">Delete</a>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('admin_courses') }}" class="btn btn-outline-secondary mt-3">← Back to Courses</a>
+</div>
+{% endblock %}

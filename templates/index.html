@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}All Tutorials{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h1>📚 Livestock & Dairy Tutorials</h1>
+    <p class="lead">Free courses on animal farming and dairy production.</p>
+
+    <form method="get" class="row g-2 my-3">
+        <div class="col-md-8">
+            <input type="text" name="search" class="form-control" placeholder="Search courses..." value="{{ search_query }}">
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-outline-success w-100">Search</button>
+        </div>
+    </form>
+
+    <div class="mb-4">
+        <a href="{{ url_for('index') }}" class="btn btn-sm {% if not current_category %}btn-success{% else %}btn-outline-success{% endif %} me-1">All</a>
+        {% for cat in categories %}
+            <a href="{{ url_for('index', category=cat.slug) }}" class="btn btn-sm {% if current_category == cat.slug %}btn-success{% else %}btn-outline-success{% endif %} me-1">{{ cat.name }}</a>
+        {% endfor %}
+    </div>
+
+    <div class="row">
+        {% for course in courses %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                {% if course.image %}
+                    <img src="{{ url_for('uploaded_file', filename=course.image) }}" class="card-img-top" alt="{{ course.title }}">
+                {% else %}
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
+                        <span style="font-size: 3rem;">📘</span>
+                    </div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ course.title }}</h5>
+                    {% if course.category_name %}<span class="badge bg-secondary mb-2">{{ course.category_name }}</span>{% endif %}
+                    <p class="card-text">{{ course.description[:120] }}{% if course.description|length > 120 %}...{% endif %}</p>
+                    <a href="{{ url_for('course_detail', course_id=course.id) }}" class="btn btn-outline-success">View Course →</a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <div class="alert alert-info">No tutorials available yet. Check back soon!</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+

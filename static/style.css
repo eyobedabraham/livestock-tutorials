@@ -1,0 +1,13 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+.navbar.bg-success {
+    background-color: #2d6a4f !important;  /* dark green like livestock branding */
+}
+footer {
+    margin-top: auto;
+}
+.card {
+    border-radius: 10px;
+}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Admin Dashboard</h2>
+    <div class="row mt-3">
+        <div class="col-md-3"><div class="card text-white bg-primary mb-3"><div class="card-body"><h5>{{ stats.categories }}</h5><p>Categories</p></div></div></div>
+        <div class="col-md-3"><div class="card text-white bg-success mb-3"><div class="card-body"><h5>{{ stats.courses }}</h5><p>Courses</p></div></div></div>
+        <div class="col-md-3"><div class="card text-white bg-warning mb-3"><div class="card-body"><h5>{{ stats.modules }}</h5><p>Modules</p></div></div></div>
+        <div class="col-md-3"><div class="card text-white bg-danger mb-3"><div class="card-body"><h5>{{ stats.lessons }}</h5><p>Lessons</p></div></div></div>
+    </div>
+    <div class="list-group mt-3">
+        <a href="{{ url_for('admin_categories') }}" class="list-group-item list-group-item-action">📂 Manage Categories</a>
+        <a href="{{ url_for('admin_courses') }}" class="list-group-item list-group-item-action">📘 Manage Courses</a>
+        <a href="{{ url_for('admin_logout') }}" class="list-group-item list-group-item-action text-danger">🚪 Logout</a>
+    </div>
+</div>
+{% endblock %}

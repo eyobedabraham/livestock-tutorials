@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Edit Module{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Edit Module</h2>
+    <form method="post">
+        <div class="mb-3"><input type="text" name="title" class="form-control" value="{{ module.title }}" required></div>
+        <div class="mb-3"><input type="number" name="order" class="form-control" value="{{ module.order }}"></div>
+        <button type="submit" class="btn btn-success">Update</button>
+        <a href="{{ url_for('admin_modules', course_id=module.course_id) }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

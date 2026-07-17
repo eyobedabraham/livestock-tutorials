@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Lessons - {{ module.title }}{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('admin_courses') }}">Courses</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('admin_modules', course_id=module.course_id) }}">Modules</a></li>
+            <li class="breadcrumb-item active">{{ module.title }}</li>
+        </ol>
+    </nav>
+    <h2>Lessons for "{{ module.title }}"</h2>
+
+    <!-- Add Lesson Form -->
+    <form method="post" action="{{ url_for('admin_add_lesson') }}" enctype="multipart/form-data" class="mb-4">
+        <input type="hidden" name="module_id" value="{{ module.id }}">
+        <div class="row g-2">
+            <div class="col-md-4"><input type="text" name="title" class="form-control" placeholder="Lesson title" required></div>
+            <div class="col-md-2"><input type="number" name="order" class="form-control" placeholder="Order" value="0"></div>
+            <div class="col-md-3"><input type="text" name="youtube_url" class="form-control" placeholder="YouTube URL (e.g., https://youtu.be/...)"></div>
+            <div class="col-md-3"><input type="file" name="pdf" class="form-control" accept=".pdf"></div>
+        </div>
+        <textarea name="content" class="form-control mt-2" rows="3" placeholder="Lesson content (HTML allowed)"></textarea>
+        <div class="mt-2"><label>Photos (multiple):</label><input type="file" name="photos" class="form-control" accept="image/*" multiple></div>
+        <button type="submit" class="btn btn-success mt-2">Add Lesson</button>
+    </form>
+
+    <table class="table">
+        <thead><tr><th>Order</th><th>Title</th><th>Video</th><th>PDF</th><th>Actions</th></tr></thead>
+        <tbody>
+        {% for l in lessons %}
+        <tr>
+            <td>{{ l.order }}</td><td>{{ l.title }}</td>
+            <td>{% if l.youtube_url %}✅{% endif %}</td><td>{% if l.pdf_filename %}✅{% endif %}</td>
+            <td>
+                <a href="{{ url_for('admin_edit_lesson', lesson_id=l.id) }}" class="btn btn-sm btn-warning">Edit</a>
+                <a href="{{ url_for('admin_delete_lesson', lesson_id=l.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('admin_modules', course_id=module.course_id) }}" class="btn btn-outline-secondary mt-3">← Back to Modules</a>
+</div>
+{% endblock %}
