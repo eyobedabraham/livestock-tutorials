@@ -17,6 +17,15 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'pdf'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+# ============================================================
+#  🔥 FIX: Remove X-Frame-Options to allow iframe embedding
+# ============================================================
+@app.after_request
+def remove_x_frame_options(response):
+    response.headers.pop('X-Frame-Options', None)
+    return response
+# ============================================================
+
 # ==================== DATABASE ====================
 def init_db():
     conn = sqlite3.connect('tutorials.db')
